@@ -2,31 +2,68 @@ import { PaginationParams } from '@/core/repositories/pagination-params'
 import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma.service'
+import { PrismaAnswerCommentMapper } from '../mappers/prisma-answer-comment-mapper'
 
 @Injectable()
 export class PrismaAnswerCommentsRepository
   implements AnswerCommentsRepository
 {
-  create(answerComment: AnswerComment): Promise<void> {
-    throw new Error('Method not implemented.')
+  constructor(private prisma: PrismaService) {}
+
+  async create(answerComment: AnswerComment) {
+    const data = PrismaAnswerCommentMapper.toPrisma(answerComment)
+
+    await this.prisma.comment.create({
+      data,
+    })
   }
 
-  delete(answerComment: AnswerComment): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(answerComment: AnswerComment) {
+    const data = PrismaAnswerCommentMapper.toPrisma(answerComment)
+
+    await this.prisma.comment.delete({
+      where: {
+        id: data.id,
+      },
+    })
   }
 
-  save(answerComment: AnswerComment): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(answerComment: AnswerComment) {
+    const data = PrismaAnswerCommentMapper.toPrisma(answerComment)
+
+    await this.prisma.comment.update({
+      where: {
+        id: data.id,
+      },
+      data,
+    })
   }
 
-  findById(id: string): Promise<AnswerComment | null> {
-    throw new Error('Method not implemented.')
+  async findById(id: string): Promise<AnswerComment | null> {
+    const answerComment = await this.prisma.comment.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!answerComment) return null
+
+    return PrismaAnswerCommentMapper.toDomain(answerComment)
   }
 
-  findManyByAnswerId(
-    answerId: string,
-    params: PaginationParams,
-  ): Promise<AnswerComment[]> {
-    throw new Error('Method not implemented.')
+  async findManyByAnswerId(answerId: string, { page }: PaginationParams) {
+    const answerComments = await this.prisma.comment.findMany({
+      where: {
+        answerId,
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return answerComments.map(PrismaAnswerCommentMapper.toDomain)
   }
 }
