@@ -38,8 +38,6 @@ export class CreateAccountController {
       password,
     })
 
-    console.log(result)
-
     if (result.isLeft()) {
       const error = result.value
 

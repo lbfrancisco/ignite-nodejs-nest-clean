@@ -43,3 +43,24 @@ Authorization: Bearer {{authToken}}
 GET {{baseUrl}}/questions?page=1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name get_question_by_slug
+
+GET {{baseUrl}}/questions/nova-pergunta-3
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name edit_question
+
+PUT {{baseUrl}}/questions/dfe794a5-6a66-48f8-8219-88f9c3e2aab0
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "New title",
+  "content": "New content"
+}
