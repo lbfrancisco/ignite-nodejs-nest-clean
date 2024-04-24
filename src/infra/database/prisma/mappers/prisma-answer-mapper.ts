@@ -18,6 +18,7 @@ export class PrismaAnswerMapper {
 
   static toPrisma(answer: Answer): Prisma.AnswerUncheckedCreateInput {
     return {
+      id: answer.id.toString(),
       authorId: answer.authorId.toString(),
       questionId: answer.questionId.toString(),
       content: answer.content,

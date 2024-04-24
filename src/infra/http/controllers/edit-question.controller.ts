@@ -1,6 +1,6 @@
 import {
+  BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
   Param,
@@ -44,7 +44,7 @@ export class EditQuestionController {
     })
 
     if (result.isLeft()) {
-      throw new ConflictException()
+      throw new BadRequestException()
     }
   }
 }
