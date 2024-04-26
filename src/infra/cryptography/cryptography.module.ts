@@ -5,23 +5,21 @@ import { HashGenerator } from '@/domain/forum/application/cryptography/hash-gene
 import { JwtEncrypter } from './jwt-encrypter'
 import { BcryptHasher } from './bcrypt-hasher'
 
-const providers = [
-  {
-    provide: Encrypter,
-    useClass: JwtEncrypter,
-  },
-  {
-    provide: HashComparer,
-    useClass: BcryptHasher,
-  },
-  {
-    provide: HashGenerator,
-    useClass: BcryptHasher,
-  },
-]
-
 @Module({
-  providers,
-  exports: providers,
+  providers: [
+    {
+      provide: Encrypter,
+      useClass: JwtEncrypter,
+    },
+    {
+      provide: HashComparer,
+      useClass: BcryptHasher,
+    },
+    {
+      provide: HashGenerator,
+      useClass: BcryptHasher,
+    },
+  ],
+  exports: [Encrypter, HashComparer, HashGenerator],
 })
 export class CryptographyModule {}
