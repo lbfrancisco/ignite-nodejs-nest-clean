@@ -6,9 +6,21 @@ export class InMemoryAnswerAttachmentsRepository
 {
   public items: AnswerAttachment[] = []
 
+  async createMany(attachments: AnswerAttachment[]) {
+    this.items.push(...attachments)
+  }
+
+  async deleteMany(attachments: AnswerAttachment[]) {
+    const answerAttachments = this.items.filter((item) => {
+      return !attachments.some((attachment) => attachment.equals(item))
+    })
+
+    this.items = answerAttachments
+  }
+
   async findManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
-      (item) => item.id.toString() === answerId,
+      (item) => item.answerId.toString() === answerId,
     )
 
     return answerAttachments
