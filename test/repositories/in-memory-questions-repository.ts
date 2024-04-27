@@ -14,7 +14,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async create(question: Question) {
     this.items.push(question)
 
-    await this.questionAttachmentsRepository.createMany(
+    this.questionAttachmentsRepository.createMany(
       question.attachments.getItems(),
     )
 
@@ -31,11 +31,11 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   async save(question: Question) {
     this.items[this.items.indexOf(question)] = question
 
-    await this.questionAttachmentsRepository.createMany(
+    this.questionAttachmentsRepository.createMany(
       question.attachments.getNewItems(),
     )
 
-    await this.questionAttachmentsRepository.deleteMany(
+    this.questionAttachmentsRepository.deleteMany(
       question.attachments.getRemovedItems(),
     )
 

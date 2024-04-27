@@ -59,10 +59,6 @@ describe('Edit Question Use Case', () => {
       2,
     )
 
-    questionAttachmentsRepository.items.forEach((item) =>
-      console.log(item.attachmentId),
-    )
-
     expect(questionsRepository.items[0].attachments.currentItems).toEqual([
       expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
       expect.objectContaining({ attachmentId: new UniqueEntityID('3') }),
