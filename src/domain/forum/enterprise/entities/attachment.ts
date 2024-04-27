@@ -1,17 +1,17 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
-interface AttachmentProps {
+export interface AttachmentProps {
   title: string
   url: string
 }
 
 export class Attachment extends Entity<AttachmentProps> {
-  get title(): string {
+  get title() {
     return this.props.title
   }
 
-  get url(): string {
+  get url() {
     return this.props.url
   }
 
