@@ -1,23 +1,27 @@
 import { makeAnswer } from 'test/factories/make-answer'
-import { OnAnswerCreated } from './on-answer-created'
-import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { MockInstance } from 'vitest'
+import { NotificationsRepository } from '../repositories/notifications-repository'
 import {
   SendNotificationUseCase,
   SendNotificationUseCaseRequest,
   SendNotificationUseCaseResponse,
 } from '../use-cases/send-notification'
-import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
-import { makeQuestion } from 'test/factories/make-question'
-import { MockInstance } from 'vitest'
-import { NotificationsRepository } from '../repositories/notifications-repository'
-import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
+import { OnAnswerCreated } from './on-answer-created'
 
 let answersRepository: InMemoryAnswersRepository
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let questionsRepository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+let attachmentsRepository: InMemoryAttachmentsRepository
+let studentsRepository: InMemoryStudentsRepository
 let notificationsRepository: NotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
 
@@ -31,6 +35,8 @@ describe('On Answer Created', () => {
     questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
     questionsRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
+      attachmentsRepository,
+      studentsRepository,
     )
 
     answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()

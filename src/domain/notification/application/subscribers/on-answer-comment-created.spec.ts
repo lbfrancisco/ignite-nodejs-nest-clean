@@ -1,21 +1,23 @@
+import { makeAnswer } from 'test/factories/make-answer'
+import { makeAnswerComment } from 'test/factories/make-answer-comment'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 import { MockInstance } from 'vitest'
+import { NotificationsRepository } from '../repositories/notifications-repository'
 import {
   SendNotificationUseCase,
   SendNotificationUseCaseRequest,
   SendNotificationUseCaseResponse,
 } from '../use-cases/send-notification'
-import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
-import { NotificationsRepository } from '../repositories/notifications-repository'
 import { OnAnswerCommentCreated } from './on-answer-comment-created'
-import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
-import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
-import { makeAnswer } from 'test/factories/make-answer'
-import { makeAnswerComment } from 'test/factories/make-answer-comment'
-import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
 
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let answerCommentsRepository: InMemoryAnswerCommentsRepository
 let answersRepository: InMemoryAnswersRepository
+let studentsRepository: InMemoryStudentsRepository
 let notificationsRepository: NotificationsRepository
 let sendNotificationUseCase: SendNotificationUseCase
 
@@ -31,7 +33,11 @@ describe('On Answer Comment Created', () => {
       answerAttachmentsRepository,
     )
 
-    answerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    studentsRepository = new InMemoryStudentsRepository()
+
+    answerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      studentsRepository,
+    )
 
     notificationsRepository = new InMemoryNotificationsRepository()
 
