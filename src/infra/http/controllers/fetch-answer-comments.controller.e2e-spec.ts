@@ -1,13 +1,13 @@
-import request from 'supertest'
-import { INestApplication } from '@nestjs/common'
-import { Test } from '@nestjs/testing'
-import { JwtService } from '@nestjs/jwt'
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
+import { INestApplication } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { Test } from '@nestjs/testing'
+import request from 'supertest'
+import { AnswerFactory } from 'test/factories/make-answer'
+import { AnswerCommentFactory } from 'test/factories/make-answer-comment'
 import { QuestionFactory } from 'test/factories/make-question'
 import { StudentFactory } from 'test/factories/make-student'
-import { DatabaseModule } from '@/infra/database/database.module'
-import { AnswerCommentFactory } from 'test/factories/make-answer-comment'
-import { AnswerFactory } from 'test/factories/make-answer'
 
 describe('Fetch Answer Comments (E2E)', () => {
   let app: INestApplication
@@ -75,11 +75,17 @@ describe('Fetch Answer Comments (E2E)', () => {
       .send()
 
     expect(response.statusCode).toEqual(200)
-    expect(response.body.answerComments).toHaveLength(2)
+    expect(response.body.comments).toHaveLength(2)
     expect(response.body).toEqual({
-      answerComments: expect.arrayContaining([
-        expect.objectContaining({ content: 'New comment 1' }),
-        expect.objectContaining({ content: 'New comment 2' }),
+      comments: expect.arrayContaining([
+        expect.objectContaining({
+          content: 'New comment 1',
+          author: user.name,
+        }),
+        expect.objectContaining({
+          content: 'New comment 2',
+          author: user.name,
+        }),
       ]),
     })
   })

@@ -62,11 +62,17 @@ describe('Fetch Question Comments (E2E)', () => {
       .send()
 
     expect(response.statusCode).toEqual(200)
-    expect(response.body.questionComments).toHaveLength(2)
+    expect(response.body.comments).toHaveLength(2)
     expect(response.body).toEqual({
-      questionComments: expect.arrayContaining([
-        expect.objectContaining({ content: 'New comment 1' }),
-        expect.objectContaining({ content: 'New comment 2' }),
+      comments: expect.arrayContaining([
+        expect.objectContaining({
+          content: 'New comment 1',
+          author: user.name,
+        }),
+        expect.objectContaining({
+          content: 'New comment 2',
+          author: user.name,
+        }),
       ]),
     })
   })
