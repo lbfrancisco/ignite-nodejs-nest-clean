@@ -10,3 +10,10 @@ services:
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=docker
       - POSTGRESQL_DATABASE=nest-clean
+  cache:
+    container_name: nest-clean-cache
+    image: bitnami/redis
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=redis
