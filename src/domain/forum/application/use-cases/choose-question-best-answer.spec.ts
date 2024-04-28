@@ -1,25 +1,33 @@
-import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
-import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
-import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { makeQuestion } from 'test/factories/make-question'
-import { makeAnswer } from 'test/factories/make-answer'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { makeAnswer } from 'test/factories/make-answer'
+import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
 
 let questionsRepository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let answersRepository: InMemoryAnswersRepository
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let attachmentsRepository: InMemoryAttachmentsRepository
+let studentsRepository: InMemoryStudentsRepository
 let sut: ChooseQuestionBestAnswerUseCase
 
 describe('Choose Question Best Answer Use Case', () => {
   beforeEach(() => {
     questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
     answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    attachmentsRepository = new InMemoryAttachmentsRepository()
+    studentsRepository = new InMemoryStudentsRepository()
     questionsRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
+      attachmentsRepository,
+      studentsRepository,
     )
     answersRepository = new InMemoryAnswersRepository(
       answerAttachmentsRepository,

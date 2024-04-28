@@ -1,13 +1,15 @@
-import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
-import { makeAnswer } from 'test/factories/make-answer'
-import { CommentOnAnswerUseCase } from './comment-on-answer'
-import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { makeAnswer } from 'test/factories/make-answer'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { CommentOnAnswerUseCase } from './comment-on-answer'
 
 let answersRepository: InMemoryAnswersRepository
 let answerCommentsRepository: InMemoryAnswerCommentsRepository
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let studentsRepository: InMemoryStudentsRepository
 let sut: CommentOnAnswerUseCase
 
 describe('Comment On Answer Use Case', () => {
@@ -16,7 +18,10 @@ describe('Comment On Answer Use Case', () => {
     answersRepository = new InMemoryAnswersRepository(
       answerAttachmentsRepository,
     )
-    answerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    studentsRepository = new InMemoryStudentsRepository()
+    answerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      studentsRepository,
+    )
     sut = new CommentOnAnswerUseCase(
       answersRepository,
       answerCommentsRepository,

@@ -4,13 +4,18 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import { EditQuestionCommentUseCase } from './edit-question-comment'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let questionCommentsRepository: InMemoryQuestionCommentsRepository
+let studentsRepository: InMemoryStudentsRepository
 let sut: EditQuestionCommentUseCase
 
 describe('Edit Question Use Case', () => {
   beforeEach(() => {
-    questionCommentsRepository = new InMemoryQuestionCommentsRepository()
+    studentsRepository = new InMemoryStudentsRepository()
+    questionCommentsRepository = new InMemoryQuestionCommentsRepository(
+      studentsRepository,
+    )
     sut = new EditQuestionCommentUseCase(questionCommentsRepository)
   })
 
